@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
     
     <style>
-        /* Tus estilos CSS no cambian, los dejamos aquí */
+        /* Tus estilos CSS no cambian */
         :root {
             --tg-theme-bg-color: #ffffff;
             --tg-theme-text-color: #000000;
@@ -96,10 +96,9 @@
             const connectWalletDiv = document.getElementById('connect-wallet-btn');
             const paymentStatus = document.getElementById('payment-status');
             
-            // ¡¡¡ASEGÚRATE DE QUE ESTA URL ES LA TUYA!!!
+            // Reemplaza con tu usuario de GitHub
             const manifestUrl = 'https://kaishitsumon.github.io/telegram-mini-app-store/manifest.json';
             
-            // Ahora, cuando esta línea se ejecute, TON_CONNECT_SDK ya debería existir.
             const tonConnectUI = new TON_CONNECT_SDK.TonConnectUI({
                 manifestUrl: manifestUrl,
                 buttonRootId: 'connect-wallet-btn'
@@ -127,8 +126,8 @@
                     validUntil: Math.floor(Date.now() / 1000) + 600,
                     messages: [
                         {
-                            // ¡¡¡IMPORTANTE!!! REEMPLAZA ESTO CON TU PROPIA BILLETERA
-                            address: "UQBcUz3d6th4mu3KSKxBTSojU0xGUuKXwK1lD0E0wU9Jn90i", 
+                            // ¡¡¡IMPORTANTE!!! REEMPLAZA ESTO CON TU PROPIA BILLETERA DE PRUEBA
+                            address: "UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABC", 
                             amount: "500000000"
                         }
                     ]
