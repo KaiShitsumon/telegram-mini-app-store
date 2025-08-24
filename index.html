@@ -96,7 +96,6 @@
             const connectWalletDiv = document.getElementById('connect-wallet-btn');
             const paymentStatus = document.getElementById('payment-status');
             
-            // Reemplaza con tu usuario de GitHub
             const manifestUrl = 'https://kaishitsumon.github.io/telegram-mini-app-store/manifest.json';
             
             const tonConnectUI = new TON_CONNECT_SDK.TonConnectUI({
@@ -126,7 +125,7 @@
                     validUntil: Math.floor(Date.now() / 1000) + 600,
                     messages: [
                         {
-                            // ¡¡¡IMPORTANTE!!! REEMPLAZA ESTO CON TU PROPIA BILLETERA DE PRUEBA
+                            // ¡¡¡RECUERDA CAMBIAR ESTO POR TU BILLETERA REAL!!!
                             address: "UQBcUz3d6th4mu3KSKxBTSojU0xGUuKXwK1lD0E0wU9Jn90i", 
                             amount: "500000000"
                         }
