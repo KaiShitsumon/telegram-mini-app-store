@@ -6,16 +6,16 @@
     <title>Tienda de Producto Digital</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+    
     <style>
-        /* Estilos básicos para que se vea bien */
+        /* Tus estilos CSS no cambian, los dejamos aquí */
         :root {
-            --tg-theme-bg-color: #ffffff; /* Color de fondo por defecto */
-            --tg-theme-text-color: #000000; /* Color de texto por defecto */
-            --tg-theme-button-color: #007bff; /* Color de botón por defecto */
-            --tg-theme-button-text-color: #ffffff; /* Color de texto de botón por defecto */
-            --tg-theme-secondary-bg-color: #f1f1f1; /* Color de fondo secundario por defecto */
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #000000;
+            --tg-theme-button-color: #007bff;
+            --tg-theme-button-text-color: #ffffff;
+            --tg-theme-secondary-bg-color: #f1f1f1;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
@@ -29,7 +29,6 @@
             background-color: var(--tg-theme-bg-color);
             color: var(--tg-theme-text-color);
         }
-
         #product-card {
             background-color: var(--tg-theme-secondary-bg-color);
             padding: 20px;
@@ -39,13 +38,11 @@
             max-width: 350px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
         img {
             max-width: 100px;
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        
         button {
             background-color: var(--tg-theme-button-color);
             color: var(--tg-theme-button-text-color);
@@ -59,18 +56,15 @@
             width: 100%;
             transition: opacity 0.2s ease;
         }
-
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
-
         #status-container {
             margin-top: 20px;
             font-weight: bold;
             text-align: center;
         }
-
         .hidden {
             display: none;
         }
@@ -85,7 +79,6 @@
         <p><strong>Precio: 0.5 TON</strong></p>
         
         <div id="connect-wallet-btn"></div>
-
         <button id="buy-ton-btn" class="hidden">Comprar con 0.5 TON</button>
     </div>
 
@@ -96,40 +89,32 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tg = window.Telegram.WebApp;
-            tg.ready(); // Informa a Telegram que la app está lista
-            tg.expand(); // Expande la Mini App a toda la altura
+            tg.ready();
+            tg.expand();
 
-            // --- Referencias a los elementos del DOM ---
             const buyTonBtn = document.getElementById('buy-ton-btn');
             const connectWalletDiv = document.getElementById('connect-wallet-btn');
             const paymentStatus = document.getElementById('payment-status');
             
-            // --- Configuración de TON Connect ---
-            // El manifest.json es un archivo que describe tu app a las billeteras de TON.
-            // ¡¡¡IMPORTANTE!!! MÁS ADELANTE REEMPLAZAREMOS ESTA URL.
+            // ¡¡¡ASEGÚRATE DE QUE ESTA URL ES LA TUYA!!!
             const manifestUrl = 'https://kaishitsumon.github.io/telegram-mini-app-store/manifest.json';
             
+            // Ahora, cuando esta línea se ejecute, TON_CONNECT_SDK ya debería existir.
             const tonConnectUI = new TON_CONNECT_SDK.TonConnectUI({
                 manifestUrl: manifestUrl,
-                buttonRootId: 'connect-wallet-btn' // Le decimos al SDK que ponga su botón dentro de este div
+                buttonRootId: 'connect-wallet-btn'
             });
 
-            // --- Lógica de la interfaz ---
-            // Esta función se ejecuta cada vez que el estado de la billetera cambia (conectada/desconectada)
             tonConnectUI.onStatusChange(wallet => {
                 if (wallet) {
-                    // Si hay una billetera conectada, ocultamos el div de conexión y mostramos el botón de compra.
                     connectWalletDiv.classList.add('hidden');
                     buyTonBtn.classList.remove('hidden');
-                    console.log('Billetera conectada:', wallet.account.address);
                 } else {
-                    // Si no hay billetera, mostramos el botón de conexión y ocultamos el de compra.
                     connectWalletDiv.classList.remove('hidden');
                     buyTonBtn.classList.add('hidden');
                 }
             });
 
-            // --- Lógica de la Transacción ---
             buyTonBtn.addEventListener('click', async () => {
                 if (!tonConnectUI.connected) {
                     paymentStatus.textContent = 'Por favor, conecta tu billetera primero.';
@@ -138,15 +123,13 @@
 
                 paymentStatus.textContent = 'Preprando la transacción...';
 
-                // Define los detalles de la transacción
                 const transaction = {
-                    validUntil: Math.floor(Date.now() / 1000) + 600, // Válida por 10 minutos
+                    validUntil: Math.floor(Date.now() / 1000) + 600,
                     messages: [
                         {
                             // ¡¡¡IMPORTANTE!!! REEMPLAZA ESTO CON TU PROPIA BILLETERA
-                            address: "UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABC", 
-                            // ¡¡¡IMPORTANTE!!! EL MONTO EN nanoTONs (0.5 TON = 500,000,000 nanoTONs)
-                            amount: "500000000" 
+                            address: "UQBcUz3d6th4mu3KSKxBTSojU0xGUuKXwK1lD0E0wU9Jn90i", 
+                            amount: "500000000"
                         }
                     ]
                 };
@@ -155,16 +138,11 @@
                     paymentStatus.textContent = 'Por favor, confirma en tu billetera...';
                     buyTonBtn.disabled = true;
 
-                    // Abre la ventana de la billetera para que el usuario confirme
                     const result = await tonConnectUI.sendTransaction(transaction);
                     
-                    // Si llegamos aquí, el usuario aprobó la transacción.
-                    // 'result.boc' es la "prueba" de la transacción que enviaremos al backend.
                     paymentStatus.textContent = '¡Transacción aprobada! Verificando...';
                     console.log("BOC de la transacción:", result.boc);
-
-                    // --- PRÓXIMO PASO: Aquí irá la llamada (fetch) a nuestro backend para verificar el pago ---
-                    // Por ahora, solo mostraremos un mensaje de éxito simulado.
+                    
                     setTimeout(() => {
                          paymentStatus.textContent = '¡Pago recibido! (Simulación)';
                          buyTonBtn.disabled = false;
